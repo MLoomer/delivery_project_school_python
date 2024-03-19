@@ -1,5 +1,6 @@
 from load_packages import get_packages
 from load_packages import loadTrucks
+from Distances import get_distances
 
 
 def main():
@@ -9,6 +10,11 @@ def main():
 
 main()
 
-    #get packages from csv
-    # load trucks while reading packages
-    #once packages are loaded, ??
+
+# for each package in truck
+#check distance from current location
+# go to closest location
+#function to extract shortest distance
+#function ti get shortest time
+#function to decide which to get - shortest distance or time
+#function to extract distance of time constrant
