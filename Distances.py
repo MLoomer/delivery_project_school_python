@@ -14,6 +14,15 @@ def get_distances():
             i += 1
     return distances
 
+
+def get_travel_map():
+    with open("distances_csv.csv") as file:
+        csv_reader = csv.reader(file, delimiter=",")
+        results = []
+        for address in csv_reader:
+            results.append(address)
+    return results
+
 def get_shortest_distance(distanceArr, truck):
     packages = truck.packages
     package_ids = truck.package_IDs

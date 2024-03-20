@@ -13,13 +13,16 @@ def get_packages():
     return packages
 
 
-def loadTrucks(packages):
-    print(packages)
+def loadTrucks(packages, travel_map):
     truckOnePackageIDs = [30, 31, 34, 37, 40, 2, 4, 5, 7, 8, 10, 11, 12, 17, 19, 21]
     truckTwoPackageIDs = [3, 18, 36, 38, 6, 25, 28, 32, 20, 16, 14, 9, 15, 1, 13, 29]
     truckThreePackageIDs = [21, 22, 23, 24, 26, 27, 33, 35, 39]
 
-    trucks = [Truck(16) for i in range(3)]
+    trucks = []
+    for i in range(3):
+        trucks.append(Truck(16))
+        trucks[i].map.append(travel_map[0])
+
     package_assignments = {
         trucks[0]: truckOnePackageIDs,
         trucks[1]: truckTwoPackageIDs,
@@ -29,7 +32,12 @@ def loadTrucks(packages):
         for i in range(3):
             if int(package[0]) in package_assignments[trucks[i]]:
                 print(f"placed package {package[0]} on truck {i}")
+                index = trucks[i].add_to_Map(package[1], travel_map)
+                trucks[i].mapIndex.append(index)
                 trucks[i].loadPackage(package)
                 break
+
+    for i in range(3):
+        trucks[i].condenseMap()
 
     return trucks
