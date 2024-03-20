@@ -1,10 +1,6 @@
 import csv
 from Truck import Truck
 from HashTable import HashTable
-
-def load_package_on_truck(truck, package):
-    truck.loadPackage(package)  # Assuming the method is named load_package (lowercase)
-
 def get_packages():
     with open("packages_csv.csv") as file:
         csv_reader = csv.reader(file, delimiter=",")
@@ -16,7 +12,7 @@ def get_packages():
             packages.append(package)
     return packages
 
-#TODO: Fix
+
 def loadTrucks(packages):
     print(packages)
     truckOnePackageIDs = [30, 31, 34, 37, 40, 2, 4, 5, 7, 8, 10, 11, 12, 17, 19, 21]
@@ -33,7 +29,7 @@ def loadTrucks(packages):
         for i in range(3):
             if int(package[0]) in package_assignments[trucks[i]]:
                 print(f"placed package {package[0]} on truck {i}")
-                load_package_on_truck(trucks[i], package)
+                trucks[i].loadPackage(package)
                 break
 
     return trucks
