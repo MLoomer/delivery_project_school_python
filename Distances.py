@@ -1,27 +1,27 @@
 import csv
 from HashTable import HashTable
 
-def get_distances():
+def get_distances_old():
     with open("distances_csv.csv") as file:
         csv_reader = csv.reader(file, delimiter=",")
         # Skip header
         distances = HashTable(26)
         i = 0
-        next(csv_reader)
         for address in csv_reader:
             address, *dist = address
             distances.insert(i, dist)
             i += 1
     return distances
 
-
-def get_travel_map():
+def get_distances():
     with open("distances_csv.csv") as file:
         csv_reader = csv.reader(file, delimiter=",")
-        results = []
-        for address in csv_reader:
-            results.append(address)
-    return results
+        # Skip header
+        distances = []
+        next(csv_reader)
+        for row in csv_reader:
+            distances.append(row)
+    return distances
 
 def get_shortest_distance(distanceArr, truck):
     packages = truck.packages

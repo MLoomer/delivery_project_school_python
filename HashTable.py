@@ -35,10 +35,3 @@ class HashTable:
         # otherwise append to end
         bucket.append((key, value))
         return True
-
-    def get_all(self):
-        items = []
-        for slot in self.list:
-          if slot is not None:
-            items.append(slot)
-        return items
