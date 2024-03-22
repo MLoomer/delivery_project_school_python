@@ -18,7 +18,6 @@ def get_distances():
         csv_reader = csv.reader(file, delimiter=",")
         # Skip header
         distances = []
-        next(csv_reader)
         for row in csv_reader:
             distances.append(row)
     return distances

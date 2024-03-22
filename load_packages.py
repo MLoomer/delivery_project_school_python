@@ -17,6 +17,9 @@ def loadTrucks(packages):
     truckOnePackageIDs = [30, 31, 34, 37, 40, 2, 4, 5, 7, 8, 10, 11, 12, 17, 19, 21]
     truckTwoPackageIDs = [3, 18, 36, 38, 6, 25, 28, 32, 20, 16, 14, 9, 15, 1, 13, 29]
     truckThreePackageIDs = [21, 22, 23, 24, 26, 27, 33, 35, 39]
+    #truckOnePackageIDs = [31, 33]
+    #truckTwoPackageIDs = [3, 18, 36]
+    #truckThreePackageIDs = [21, 22, 23]
 
     # create trucks
     trucks = []

@@ -19,3 +19,11 @@ class Truck:
         self.packages.remove(package)
         self.package_IDs.remove(packageID)
         return package.address
+
+    def removePackages(self, ids):
+        for id in ids:
+            package = self.packages.lookup(id)
+            print(f"Removing package {package}")
+            #packageID, *packageValues = package
+            self.packages.remove(id)
+            self.package_IDs.remove(id)
