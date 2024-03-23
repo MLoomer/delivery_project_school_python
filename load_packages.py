@@ -1,6 +1,7 @@
 import csv
 from Truck import Truck
 from HashTable import HashTable
+import datetime
 def get_packages():
     with open("packages_csv.csv") as file:
         csv_reader = csv.reader(file, delimiter=",")
@@ -14,15 +15,21 @@ def get_packages():
 
 
 def loadTrucks(packages):
-    truckOnePackageIDs = [30, 31, 34, 37, 40, 2, 4, 5, 7, 8, 10, 11, 12, 17, 19, 21]
-    truckTwoPackageIDs = [3, 18, 36, 38, 6, 25, 28, 32, 20, 16, 14, 9, 15, 1, 13, 29]
-    truckThreePackageIDs = [21, 22, 23, 24, 26, 27, 33, 35, 39]
+    truckOnePackageIDs = [29, 7, 19, 1, 13, 39, 30, 8, 31, 20, 21, 37, 14, 15, 16, 34]
+    truckTwoPackageIDs = [27, 35, 18, 36, 3, 2, 33, 11, 17, 40, 4, 38, 5, 24, 23, 10]
+    truckThreePackageIDs = [22, 28, 9, 6, 32, 25, 26, 12]
     #truckOnePackageIDs = [31, 33]
     #truckTwoPackageIDs = [3, 18, 36]
     #truckThreePackageIDs = [21, 22, 23]
 
+    truckOneDepartureTime = datetime.timedelta(hours=8)
+    truckTwoDepartureTime = datetime.timedelta(hours=8)
+    truckThreeDepartureTime = datetime.timedelta(hours=9, minutes=5)
+
     # create trucks
-    trucks = [Truck("A", 16), Truck("B", 16), Truck("C", 16)]
+    trucks = [Truck("A", 16, truckOneDepartureTime),
+              Truck("B", 16, truckTwoDepartureTime),
+              Truck("C", 16, truckThreeDepartureTime)]
 
     package_assignments = {
         trucks[0]: truckOnePackageIDs,

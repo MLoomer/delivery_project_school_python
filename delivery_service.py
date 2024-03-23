@@ -1,3 +1,5 @@
+import datetime
+
 
 class ValueService:
     def __init__(self):
@@ -61,7 +63,8 @@ class TruckService:
         address_to_go, distance = self.nearest_drive_alg(current_address, remaining_addresses)
         self.truck.address = address_to_go
         self.truck.distance = round(float(distance) + self.truck.distance, 2)
-        print(f"Truck {self.truck.name} is driving, delivered to {self.truck.address}, traveled {float(distance)}, distance is {self.truck.distance}")
+        self.truck.time += datetime.timedelta(hours=distance / 18)
+        print(f"Truck {self.truck.name} is driving, delivered to {self.truck.address}, traveled {float(distance)}, distance is {self.truck.distance}, time is {self.truck.time}")
         self.truck.removePackages(data.get_matching_ids(self.truck.address, id_address))
         if (len(self.truck.package_IDs) == 0): return True
 
@@ -83,25 +86,34 @@ class TruckService:
         new_address = data.get_address(index + self.colOffset, self.map)
         return new_address, min
 
+
 class DeliveryService:
-    def __init__(self, trucks, map):
+    def __init__(self, trucks, map, start_time_hours):
         self.trucks = trucks
         self.map = map
-
+        self.delivered_trucks = []
+        self.current_time = datetime.timedelta(hours=start_time_hours)
 
     def deliverPackages(self):
-
-        for truck in self.trucks:
-            delivery = TruckService(truck, self.map)
-            empty = delivery.deliver_a_package()
-            if empty is True:
-                print(f"Truck completed trip, total distance: {truck.distance}")
-                self.trucks.remove(truck)
+        while len(self.trucks):
+            for truck in self.trucks:
+                if (truck.time <= self.current_time):
+                    delivery = TruckService(truck, self.map)
+                    empty = delivery.deliver_a_package()
+                    if empty is True:
+                        print(f"Truck completed trip, total distance: {truck.distance}")
+                        self.delivered_trucks.append(truck)
+                        self.trucks.remove(truck)
+            self.increaseTime()
         # while trucks are not empty
-        if self.trucks:
-            self.deliverPackages()
-        else:
-            return None
+        return self.delivered_trucks
 
-
-
+    def increaseTime(self):
+        truck_count = len(self.trucks)
+        over_count = 0
+        for truck in self.trucks:
+            if truck.time > self.current_time:
+                over_count += 1
+        if truck_count == over_count:
+            self.current_time += datetime.timedelta(minutes=15)
+            print(f"time is now: {self.current_time}")

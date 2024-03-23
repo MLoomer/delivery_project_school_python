@@ -1,13 +1,18 @@
 from HashTable import HashTable
+import datetime
 
 class Truck:
-    def __init__(self, name, capacity):
+    def __init__(self, name, capacity, depart_time):
         self.name = name
         self.capacity = capacity
         self.packages = HashTable(capacity)
         self.address = "4001 South 700 East"
         self.package_IDs = []
         self.distance = 0.0
+        self.time = depart_time
+
+    def __str__(self):
+        return f"Name: {self.name}, Capacity: {self.capacity}, Distance: {self.distance}, time {self.time}\n"
 
     def loadPackage(self, package):
         packageID, *packageValues = package
