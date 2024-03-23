@@ -22,9 +22,7 @@ def loadTrucks(packages):
     #truckThreePackageIDs = [21, 22, 23]
 
     # create trucks
-    trucks = []
-    for i in range(3):
-        trucks.append(Truck(16))
+    trucks = [Truck("A", 16), Truck("B", 16), Truck("C", 16)]
 
     package_assignments = {
         trucks[0]: truckOnePackageIDs,

@@ -1,7 +1,6 @@
 from load_packages import get_packages
 from load_packages import loadTrucks
 from Distances import get_distances
-from delivery_service import TruckService
 from delivery_service import DeliveryService
 
 def main():
