@@ -39,7 +39,8 @@ class TruckService:
     def get_remaining_id_addresses(self):
         remaining_addresses = []
         for id in self.truck.package_IDs:
-            addr = self.truck.packages.lookup(id)[0]
+            package = self.truck.packages.lookup(id)
+            addr = package.address
             remaining_addresses.append([id, addr])
         return remaining_addresses
 
@@ -70,8 +71,8 @@ class TruckService:
         self.truck.time += datetime.timedelta(hours=distance / 18)
 
         ids = data.get_matching_ids(self.truck.address, id_address)
-        self.truck.removePackages(ids)
-        print(f"Truck {self.truck.name} delivered package(s) {ids} to {self.truck.address}, traveled {float(distance)}, distance is {self.truck.distance}, time is {self.truck.time}")
+        self.truck.removePackages(ids, self.truck.time)
+        print(f"Truck {self.truck.name} delivering package(s) {ids} to {self.truck.address}, traveling {float(distance)}, distance is {self.truck.distance}, arrival will be at {self.truck.time}")
         if (len(self.truck.package_IDs) == 0): return True
 
     def nearest_drive_alg(self, current_address, remaining_addresses):
@@ -95,6 +96,7 @@ class TruckService:
 
 class DeliveryService:
     def __init__(self, trucks, map, start_time_hours, update, stoptime):
+        data = ValueService()
         self.trucks = trucks
         self.pending_trucks = self.driver_limit()
         self.map = map
@@ -102,9 +104,17 @@ class DeliveryService:
         self.current_time = datetime.timedelta(hours=start_time_hours)
         self.update_data = update
         self.update_status = ""
-        data = ValueService()
-        hour, min = data.formatTime(stoptime)
-        self.stop_time = datetime.timedelta(hours=hour, minutes=min)
+        if (stoptime == ""):
+            self.stop_time = ""
+        else:
+            hour, min = data.formatTime(stoptime)
+            self.stop_time = datetime.timedelta(hours=hour, minutes=min)
+        self.min_time = None
+        self.index = None
+
+
+    def printAllDetails(self):
+        return None
 
     def driver_limit(self):
         arr = []
@@ -114,31 +124,47 @@ class DeliveryService:
                 arr.append(truck)
         return arr
 
+    def set_min_time_and_truck(self):
+        truck_times = [truck.time for truck in self.trucks]
+        time_index_pairs = [[time, i] for i, time in enumerate(truck_times)]
+        self.index = min(time_index_pairs)[1]
+        self.min_time = time_index_pairs[self.index][0]
+
+    def update_package_status(self, truck, status):
+        if truck.status == "HUB":
+            truck.status = status
+            truck.update_packages(status)
+
     def deliverPackages(self):
         while len(self.trucks):
-            for truck in self.trucks:
-                if (truck.time <= self.current_time):
-                    delivery = TruckService(truck, self.map)
-                    empty = delivery.deliver_a_package()
-                    if empty is True:
-                        print(f"Truck {truck.name} completed trip, total distance: {truck.distance}")
-                        self.delivered_trucks.append(truck)
-                        self.trucks.remove(truck)
-                        if len(self.pending_trucks) > 0:
-                            _truck = self.pending_trucks.pop(0)
-                            self.trucks.append(_truck)
-                            print(f"Truck {_truck.name} is now delivering")
+            self.set_min_time_and_truck()
+            while self.min_time < self.current_time:
+                truck = self.trucks[self.index]
+                self.update_package_status(truck, "EN ROUTE")
+                delivery = TruckService(truck, self.map)
+                empty = delivery.deliver_a_package()
+                if empty is True:
+                    print(f"Truck {truck.name} completed trip, total distance: {truck.distance}")
+                    self.delivered_trucks.append(truck)
+                    self.trucks.remove(truck)
+                    if len(self.trucks) == 0: break
+                    if len(self.pending_trucks) > 0:
+                        _truck = self.pending_trucks.pop(0)
+                        self.trucks.append(_truck)
+                        print(f"Truck {_truck.name} is now delivering")
+                self.set_min_time_and_truck()
             self.increaseTime()
             if (self.current_time == self.stop_time):
                 self.printAllDetails()
-                #TODO:make
-                return None
+                return self.delivered_trucks
             if self.update_status != "Complete":
                 if self.current_time >= self.update_data.time:
                     print(f"package update has occurred")
-                    self.updatePackage()
-                    self.update_status = "Complete"
+                self.updatePackage()
+                self.update_status = "Complete"
         # while trucks are not empty
+        self.printAllDetails()
+        return None
         return self.delivered_trucks
 
     def updatePackage(self):
@@ -149,11 +175,4 @@ class DeliveryService:
                 truck.packages.insert(self.update_data.package.ID, vals)
 
     def increaseTime(self):
-        truck_count = len(self.trucks)
-        over_count = 0
-        for truck in self.trucks:
-            if truck.time > self.current_time:
-                over_count += 1
-        if truck_count == over_count:
-            self.current_time += datetime.timedelta(minutes=15)
-            print(f"time is now: {self.current_time}")
+        self.current_time += datetime.timedelta(minutes=15)

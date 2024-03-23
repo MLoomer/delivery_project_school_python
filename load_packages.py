@@ -1,15 +1,17 @@
 import csv
 from Truck import Truck
+from Package import Package
 from HashTable import HashTable
+
 import datetime
 def get_packages():
     with open("packages_csv.csv") as file:
         csv_reader = csv.reader(file, delimiter=",")
         # Skip header
         next(csv_reader)
-
         packages = []
-        for package in csv_reader:
+        for row in csv_reader:
+            package = Package(row)
             packages.append(package)
     return packages
 
@@ -27,9 +29,9 @@ def loadTrucks(packages):
     truckThreeDepartureTime = datetime.timedelta(hours=9, minutes=5)
 
     # create trucks
-    trucks = [Truck("1", 16, truckOneDepartureTime),
-              Truck("2", 16, truckTwoDepartureTime),
-              Truck("3", 16, truckThreeDepartureTime)]
+    trucks = [Truck("1", 16, truckOneDepartureTime, "HUB"),
+              Truck("2", 16, truckTwoDepartureTime, "HUB"),
+              Truck("3", 16, truckThreeDepartureTime, "HUB")]
 
     package_assignments = {
         trucks[0]: truckOnePackageIDs,
@@ -38,8 +40,8 @@ def loadTrucks(packages):
     }
     for package in packages:
         for i in range(3):
-            if int(package[0]) in package_assignments[trucks[i]]:
-                print(f"placed package {package[0]} on truck {i}")
+            if int(package.ID) in package_assignments[trucks[i]]:
+                print(f"placed package {package.ID} on truck {i}")
                 trucks[i].loadPackage(package)
                 break
     return trucks
