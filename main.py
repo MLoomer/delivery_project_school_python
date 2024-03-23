@@ -8,10 +8,8 @@ def main():
     trucks = loadTrucks(packages)
     travel_map = get_distances()
     deliverPackages(trucks, travel_map)
-    ##TODO: We forgot to include the addr row[0] in the travel_map so our #s are off. We need it though to get the next addr.
-    #Need to either add it in and fix formulas, or pass header addrs as a parameter
     print(trucks)
-
+    #TODO: instead of 'running', build array of package order, then give to interface to use?
 
 main()
 

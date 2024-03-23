@@ -13,17 +13,10 @@ class Truck:
         self.packages.insert(packageID, packageValues)
         self.package_IDs.append(packageID)
 
-    def removePackage(self, package):
-        print(f"Removing package {package}")
-        packageID, *packageValues = package
-        self.packages.remove(package)
-        self.package_IDs.remove(packageID)
-        return package.address
+    def removePackage(self, id):
+        self.packages.remove(id)
+        self.package_IDs.remove(id)
 
     def removePackages(self, ids):
         for id in ids:
-            package = self.packages.lookup(id)
-            print(f"Removing package {package}")
-            #packageID, *packageValues = package
-            self.packages.remove(id)
-            self.package_IDs.remove(id)
+            self.removePackage(id)

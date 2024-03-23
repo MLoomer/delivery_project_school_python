@@ -3,6 +3,7 @@ def deliverPackages(trucks, travel_map):
     for truck in trucks:
         empty = deliver_a_package(truck, travel_map)
         if empty is True:
+            print(f"Truck completed trip, total distance: {truck.distance}")
             trucks.remove(truck)
     # while trucks are not empty
     if trucks:
@@ -64,7 +65,6 @@ def nearest_drive_alg(current_address, remaining_addresses, travel_map):
     min = 9999
     index = 9999
     rowOffset, colOffset, valuemap = remove_labels(travel_map)
-    #print(f"colOffset: {colOffset}, rowOffset: {rowOffset}, valuemap: {valuemap}")
     for i in range(len(valuemap[rowInd])):
         value = float(getXYValue(rowInd, i, valuemap))
         if (value < min) and (rowInd != i):
@@ -74,7 +74,6 @@ def nearest_drive_alg(current_address, remaining_addresses, travel_map):
                 index = i
     if (index == 9999): print("failed to find match")
     new_address = strip(get_address(index+colOffset, travel_map))
-    print(new_address)
     return new_address, min
 
 def deliver_a_package(truck, travel_map):
@@ -82,7 +81,6 @@ def deliver_a_package(truck, travel_map):
     id_address = get_remaining_id_addresses(truck)
     remaining_addresses = get_remaining_addresses(id_address)
     address_to_go, distance = nearest_drive_alg(current_address, remaining_addresses, travel_map)
-    #return header (addr) and place as current address
     truck.address = address_to_go
     truck.distance += float(distance)
     print(f"delivered to {truck.address}, distance is {truck.distance}")
