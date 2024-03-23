@@ -16,8 +16,8 @@ class Truck:
 
     def loadPackage(self, package):
         packageID, *packageValues = package
-        self.packages.insert(packageID, packageValues)
-        self.package_IDs.append(packageID)
+        self.packages.insert(int(packageID), packageValues)
+        self.package_IDs.append(int(packageID))
 
     def removePackage(self, id):
         self.packages.remove(id)

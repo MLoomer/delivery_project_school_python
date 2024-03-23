@@ -10,3 +10,5 @@ class Package:
         self.weight = weight
         self.notes = notes
         self.status = status
+
+

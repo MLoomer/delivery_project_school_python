@@ -16,8 +16,8 @@ def get_packages():
 
 def loadTrucks(packages):
     truckOnePackageIDs = [29, 7, 19, 1, 13, 39, 30, 8, 31, 20, 21, 37, 14, 15, 16, 34]
-    truckTwoPackageIDs = [27, 35, 18, 36, 3, 2, 33, 11, 17, 40, 4, 38, 5, 24, 23, 10]
-    truckThreePackageIDs = [22, 28, 9, 6, 32, 25, 26, 12]
+    truckTwoPackageIDs = [27, 35, 18, 36, 3, 33, 11, 17, 40, 4, 38, 5, 24, 23]
+    truckThreePackageIDs = [10, 2, 22, 28, 9, 6, 32, 25, 26, 12]
     #truckOnePackageIDs = [31, 33]
     #truckTwoPackageIDs = [3, 18, 36]
     #truckThreePackageIDs = [21, 22, 23]
@@ -27,9 +27,9 @@ def loadTrucks(packages):
     truckThreeDepartureTime = datetime.timedelta(hours=9, minutes=5)
 
     # create trucks
-    trucks = [Truck("A", 16, truckOneDepartureTime),
-              Truck("B", 16, truckTwoDepartureTime),
-              Truck("C", 16, truckThreeDepartureTime)]
+    trucks = [Truck("1", 16, truckOneDepartureTime),
+              Truck("2", 16, truckTwoDepartureTime),
+              Truck("3", 16, truckThreeDepartureTime)]
 
     package_assignments = {
         trucks[0]: truckOnePackageIDs,
