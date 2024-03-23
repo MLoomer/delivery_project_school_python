@@ -25,6 +25,10 @@ class ValueService:
             return arr[j][i]
         return arr[i][j]
 
+    def formatTime(self, time):
+        hour, min = time.split(":")
+        return [int(hour), int(min)]
+
 
 class TruckService:
     def __init__(self, truck, map):
@@ -90,7 +94,7 @@ class TruckService:
 
 
 class DeliveryService:
-    def __init__(self, trucks, map, start_time_hours, update):
+    def __init__(self, trucks, map, start_time_hours, update, stoptime):
         self.trucks = trucks
         self.pending_trucks = self.driver_limit()
         self.map = map
@@ -98,6 +102,9 @@ class DeliveryService:
         self.current_time = datetime.timedelta(hours=start_time_hours)
         self.update_data = update
         self.update_status = ""
+        data = ValueService()
+        hour, min = data.formatTime(stoptime)
+        self.stop_time = datetime.timedelta(hours=hour, minutes=min)
 
     def driver_limit(self):
         arr = []
@@ -122,6 +129,10 @@ class DeliveryService:
                             self.trucks.append(_truck)
                             print(f"Truck {_truck.name} is now delivering")
             self.increaseTime()
+            if (self.current_time == self.stop_time):
+                self.printAllDetails()
+                #TODO:make
+                return None
             if self.update_status != "Complete":
                 if self.current_time >= self.update_data.time:
                     print(f"package update has occurred")

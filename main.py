@@ -11,7 +11,8 @@ def main():
     travel_map = get_distances()
     package_update = PackageUpdate(9, "410 S State St", "Salt Lake City", "UT",
                                    84103, "EOD", 2, 10, 20)
-    delivery = DeliveryService(trucks, travel_map, 8, package_update)
+    val = input("Is there a specific time you want to stop to see route info? If so, enter a hour and minute in format of: #:##, in intervals of 15min. Otherwise hit enter\n")
+    delivery = DeliveryService(trucks, travel_map, 8, package_update, val)
     finished_trucks = delivery.deliverPackages()
     sum = 0
     for truck in finished_trucks:
@@ -19,13 +20,8 @@ def main():
         sum += truck.distance
     print(f"total distance: {sum}")
 
-    #TODO: Way to see status of any specific package. By ID maybe?
-    #see status of eevry package at specifc times
-        #input a time for when to stop, print all package status
+    #TODO: Make fucntion printAllDetails() that prints all package status and truck distances
     #comment my code
-
-    #package specifics
-
 
 main()
 
