@@ -1,4 +1,4 @@
-#Michael Loomer - 001305152
+
 
 from load_packages import get_packages
 from load_packages import loadTrucks
