@@ -1,3 +1,5 @@
+
+#Package object
 class Package:
 
     def __init__(self, arr):
@@ -10,5 +12,6 @@ class Package:
         self.weight = arr[6]
         self.notes = arr[7]
         self.status = "HUB"
+        self.delivery_time = None
 
 

@@ -1,5 +1,6 @@
 import csv
 
+#reads distances from file
 def get_distances():
     with open("distances_csv.csv") as file:
         csv_reader = csv.reader(file, delimiter=",")

@@ -1,3 +1,4 @@
+#my own hash table
 class HashTable:
     # create table, set size to max truck size unless otherwise stated
     def __init__(self, size=16):
@@ -11,12 +12,14 @@ class HashTable:
         bucket = self.list[bucketNum]
         return bucket
 
+    #remove from table
     def remove(self, key):
         bucket = self.hashBucket(key)
         for item in bucket:
             if item[0] == key:
                 bucket.remove(item)
 
+    #looks up id
     def lookup(self, key):
         bucket = self.hashBucket(key)
         for item in bucket:
